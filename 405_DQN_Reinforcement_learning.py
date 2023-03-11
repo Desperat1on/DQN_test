@@ -21,7 +21,7 @@ EPSILON = 0.9  # greedy policy
 GAMMA = 0.9  # reward discount
 TARGET_REPLACE_ITER = 100  # target update frequency
 MEMORY_CAPACITY = 2000
-env = gym.make('CartPole-v1',render_mode="human")
+env = gym.make('CartPole-v1', render_mode="human")  # 指定render_mode为human以显示画面
 env = env.unwrapped
 N_ACTIONS = env.action_space.n
 N_STATES = env.observation_space.shape[0]
@@ -102,14 +102,14 @@ dqn = DQN()
 
 print('\nCollecting experience...')
 for i_episode in range(400):
-    s, _ = env.reset()
+    s, _ = env.reset()  # 返回值包含observation(state)以及info(对observation的解释)
     ep_r = 0
     while True:
         env.render()
         a = dqn.choose_action(s)
 
         # take action
-        s_, r, done, truncated ,info = env.step(a)
+        s_, r, done, truncated, info = env.step(a)  # returns a tuple (observation, reward, terminated, truncated, info)
 
         # modify the reward
         x, x_dot, theta, theta_dot = s_

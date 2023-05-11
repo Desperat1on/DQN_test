@@ -1,9 +1,15 @@
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+# import tensorflow as
+import tensorflow.compat.v1 as tf
+
+tf.disable_v2_behavior()
 
 np.random.seed(1)
 tf.set_random_seed(1)
+
+
+# tf.random.set_seed(1)
 
 
 # Deep Q Network off-policy
@@ -75,7 +81,7 @@ class DeepQNetwork:
             self._train_op = tf.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
         # ------------------ build target_net ------------------
-        self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')    # input
+        self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')  # input
         with tf.variable_scope('target_net'):
             # c_names(collections_names) are the collections to store variables
             c_names = ['target_net_params', tf.GraphKeys.GLOBAL_VARIABLES]
@@ -106,7 +112,7 @@ class DeepQNetwork:
 
     def choose_action(self, observation):
         # to have batch dimension when feed into tf placeholder
-        observation=np.array(observation)
+        observation = np.array(observation)
         observation = observation[np.newaxis, :]
 
         if np.random.uniform() < self.epsilon:
@@ -181,6 +187,3 @@ class DeepQNetwork:
         plt.ylabel('Cost')
         plt.xlabel('training steps')
         plt.show()
-
-
-

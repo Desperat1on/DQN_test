@@ -22,7 +22,10 @@ def update():
             action = action_
             # break while loop when end of this episode
             if done:
+                print("episode: %d" % episode)
                 break
+    print('game over')
+    env.destroy()
 
 
 if __name__ == '__main__':

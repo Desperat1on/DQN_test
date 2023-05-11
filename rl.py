@@ -9,6 +9,7 @@ class RL(object):
         self.gamma = reward_decay
         self.epsilon = e_greedy
         self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float64)
+
     def choose_action(self, observation):
         self.check_state_exist(observation)
         if np.random.uniform() < self.epsilon:
@@ -18,8 +19,10 @@ class RL(object):
         else:
             action = np.random.choice(self.actions)
         return action
+
     def learn(self, *args):
         Pass
+
     def check_state_exist(self, state):
         if state not in self.q_table.index:
             self.q_table = self.q_table.append(

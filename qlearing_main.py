@@ -17,7 +17,7 @@ def update():
                 print("episode: %d" % episode)
                 break
     print('game over')
-    env.destory()
+    env.destroy()
 
 
 if __name__ == '__main__':

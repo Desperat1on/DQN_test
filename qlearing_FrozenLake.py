@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def q_learning(env, num_episodes, alpha, gamma, epsilon):
+def q_learning(env, num_episodes, alpha, gamma, epsilon, epsilon_decay, min_epsilon):
     # 初始化Q表，将其所有值设为0
     Q = np.zeros((env.observation_space.n, env.action_space.n))
 
@@ -21,7 +21,6 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon):
         # print(state)
 
         # 根据epsilon-greedy策略选择动作
-        epsilon = epsilon / (episode + 1)
         while True:
             # 以epsilon的概率进行随机探索，以1-epsilon的概率进行利用已学到的最优策略
             if np.random.uniform(0, 1) < epsilon:
@@ -30,7 +29,7 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon):
                 action = np.argmax(Q[state, :])
 
             # 执行动作，观察环境返回的下一个状态、奖励和是否终止
-            print(action)
+            # print(action)
             next_state, reward, done, truncated, info = env.step(action)
 
             # 更新Q表的值
@@ -50,6 +49,11 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon):
         # 将回合的奖励添加到列表中
         rewards.append(total_reward)
 
+        # 每隔5个回合减小探索度
+        if episode % 5 == 0:
+            if epsilon > min_epsilon:
+                epsilon *= epsilon_decay
+
         # 每隔100个回合打印一次累计奖励的平均值
         if episode % 100 == 0:
             avg_reward = np.mean(rewards[-100:])
@@ -62,9 +66,10 @@ if __name__ == '__main__':
     desc = ["SFFHF", "FFFHF", "HHFFG", "FFFFF", "FFHHH"]
     # env = gym.make('FrozenLake-v1', desc=desc, is_slippery=True, render_mode="human")
     # print(env.action_space)
+    # print(env.action_space.n)
     # print(env.action_space.sample())
     # print(env.observation_space)
-    # env.reward_range = (-1, 1)
+    # print(env.observation_space.n)
     # env.reset()
     # env.render()
 
@@ -73,12 +78,14 @@ if __name__ == '__main__':
 
     # 设置超参数
     num_episodes = 200  # 回合数
-    alpha = 0.8  # 学习率
-    gamma = 0.95  # 折扣因子
-    epsilon = 0.1  # 探索率
+    alpha = 0.01  # 学习率
+    gamma = 0.9  # 折扣因子
+    epsilon = 0.8  # 探索率
+    epsilon_decay = 0.25
+    min_epsilon = 0
 
     # 运行Q-learning算法
-    Q, rewards = q_learning(env, num_episodes, alpha, gamma, epsilon)
+    Q, rewards = q_learning(env, num_episodes, alpha, gamma, epsilon, epsilon_decay, min_epsilon)
 
     env.close()
     # 绘制学习曲线
@@ -86,5 +93,5 @@ if __name__ == '__main__':
     plt.xlabel('Episode')
     plt.ylabel('Reward')
     plt.title('Learning Curve')
-    plt.savefig('./output/learning_curve_qlearning_1.png')
+    plt.savefig('./output/learning_curve_qlearning_3.png')
     plt.show()

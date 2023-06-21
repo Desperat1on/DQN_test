@@ -87,11 +87,11 @@ BATCH_SIZE = 128
 GAMMA = 0.95
 EPS_START = 0.99
 EPS_END = 0
-EPS_DECAY = 500
+EPS_DECAY = 1000
 TAU = 0.01
 LR = 1e-3
 if torch.cuda.is_available():
-    num_episodes = 300
+    num_episodes = 500
 else:
     num_episodes = 50
 

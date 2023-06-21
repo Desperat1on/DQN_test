@@ -63,8 +63,9 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, epsilon_decay, min_epsi
 
 
 if __name__ == '__main__':
+    # 创建FrozenLake环境
     desc = ["SFFHF", "FFFHF", "HHFFG", "FFFFF", "FFHHH"]
-    # env = gym.make('FrozenLake-v1', desc=desc, is_slippery=True, render_mode="human")
+    env = gym.make('FrozenLake-v1', desc=desc, is_slippery=False, render_mode="human")
     # print(env.action_space)
     # print(env.action_space.n)
     # print(env.action_space.sample())
@@ -74,7 +75,7 @@ if __name__ == '__main__':
     # env.render()
 
     # 创建FrozenLake环境
-    env = gym.make('FrozenLake-v1', desc=desc, is_slippery=False, render_mode="human")
+    # env = gym.make('FrozenLake-v1', desc=desc, is_slippery=False, render_mode="human")
 
     # 设置超参数
     num_episodes = 200  # 回合数
